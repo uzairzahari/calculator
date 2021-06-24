@@ -1,16 +1,16 @@
 <template>
   <div class="container">
     <!-- Calculator application -->
-    <div class="calc p-3 rounded" style="max-width: 400px; margin: 50px auto; background: #000">
+    <div class="calc p-3 rounded" style="max-width: 400px; margin: 50px auto; background: #fff">
       <!-- Result -->
-      <div class="w-full rounded m-1 p-3 lead text-white bg-dark" style="text-align: right; font-weight: bold;">
+      <div class="w-full rounded m-1 p-3 lead text-black bg-blue" style="text-align: right; font-weight: bold;">
         {{val || 0}}
       </div>
       <!-- Button -->
       <div class="row no-gutters">
         <div class="col-3" v-for="n in elements" :key="n">
-          <div class="lead text-white text-center m-1 py-3 bg-dark rounded hover-class"
-          :class="{'bg-orange': ['*', '-', '+', '='].includes(n)}"
+          <div class="lead text-black text-center m-1 p-3 bg-blue rounded hover-class"
+          style="font-weight: bold"
           @click="action(n)"
           >
           {{n}}
@@ -58,7 +58,11 @@ export default {
       }
 
       if(n === '='){
-        
+        this.val = eval(
+          this.preVal + this.operator + this.val
+        );
+        this.preVal = '';
+        this.operator = null;
       }
     }
   }
@@ -67,15 +71,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.bg-dark{
-  background: #333;
+.bg-blue{
+  background: #B2F7EF;
 }
-.bg-orange{
-  background: #fe9e09;
-}
+
 .hover-class:hover{
   cursor: pointer;
   background: #a5a5a5;
+  transition: 0.5s;
 }
 .calc{
   box-shadow: 0 10px 20px rgba(0,0,0,0.40), 0 6px 6px rgba(0,0,0,0.63);
