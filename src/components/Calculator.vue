@@ -1,15 +1,15 @@
 <template>
   <div class="container">
     <!-- Calculator application -->
-    <div class="calc p-3 rounded" style="max-width: 400px; margin: 50px auto; background: #fff">
+    <div class="calc p-3 rounded" style="max-width: 400px; margin: 50px auto; background: #1768AC">
       <!-- Result -->
-      <div class="w-full rounded m-1 p-3 lead text-black bg-blue" style="text-align: right; font-weight: bold;">
-        {{val || 0}}
+      <div class="w-full rounded m-1 p-3 lead text-white bg-blue" style="text-align: right; font-weight: bold;">
+        {{state.val || 0}}
       </div>
       <!-- Button -->
       <div class="row no-gutters">
-        <div class="col-3" v-for="n in elements" :key="n">
-          <div class="lead text-black text-center m-1 p-3 bg-blue rounded hover-class"
+        <div class="col-3" v-for="n in state.elements" :key="n">
+          <div class="lead text-white text-center m-1 p-3 bg-blue rounded hover-class"
           style="font-weight: bold"
           @click="action(n)"
           >
@@ -22,48 +22,51 @@
 </template>
 
 <script>
+import { reactive } from 'vue';
+
 export default {
   name: 'Calculator',
-  props: {
-    msg: String
-  },
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       val: '',
       elements: ['C', '%', '/', '*', 7, 8, 9, '-', 4, 5, 6, '+', 1, 2, 3, '=', 0, '.' ],
       operator: null,
-      preVal: '',
-    }
-  },
+      preVal: ''
+    })
 
-  methods: {
-    action(n){
+    function action(n) {
+      const hasAppendValue = !isNaN(n) || n === '.';
+      const hasClear = n === 'C';
+      const hasPercents = n === '%';
+      const hasOperator = ['/','*','-','+'].includes(n);
+      const hasEqual = n === '=';
 
-      if(!isNaN(n) || n === '.'){
-      this.val += n + '';
+      if(hasAppendValue){
+      state.val += n + '';
       }
-
-      if(n === 'C'){
-        this.val = '';
+      if(hasClear){
+        state.val = '';
       }
-
-      if(n === '%'){
-        this.val = this.val / 100 + '';
+      if(hasPercents){
+        state.val = state.val / 100 + '';
       }
-
-      if(['/','*','-','+'].includes(n)){
-        this.operator = n;
-        this.preVal = this.val;
-        this.val = '';
+      if(hasOperator){
+        state.operator = n;
+        state.preVal = state.val;
+        state.val = '';
       }
-
-      if(n === '='){
-        this.val = eval(
-          this.preVal + this.operator + this.val
+      if(hasEqual){
+        state.val = eval(
+          state.preVal + state.operator + state.val
         );
-        this.preVal = '';
-        this.operator = null;
+        state.preVal = '';
+        state.operator = null;
       }
+    }
+
+    return {
+      state,
+      action
     }
   }
 }
@@ -72,12 +75,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .bg-blue{
-  background: #B2F7EF;
+  background: #2541B2;
 }
-
 .hover-class:hover{
   cursor: pointer;
-  background: #a5a5a5;
+  background: #06BEE1;
   transition: 0.5s;
 }
 .calc{
