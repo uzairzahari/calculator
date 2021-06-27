@@ -1,16 +1,16 @@
 <template>
   <div class="container">
     <!-- Calculator application -->
-    <div class="calc p-3 rounded" style="max-width: 400px; margin: 50px auto; background: #1768AC">
+    <div class="calc p-3 rounded" style="max-width: 400px; margin: 50px auto; background: #1c1c1c">
       <!-- Result -->
-      <div class="w-full rounded m-1 p-3 lead text-white bg-blue" style="text-align: right; font-weight: bold;">
+      <div class="w-full rounded m-1 p-3 lead text-black bg-grey" style="text-align: right; font-weight: bold;">
         {{state.val || 0}}
       </div>
       <!-- Button -->
-      <div class="row no-gutters">
+      <div class="row">
         <div class="col-3" v-for="n in state.elements" :key="n">
-          <div class="lead text-white text-center m-1 p-3 bg-blue rounded hover-class"
-          style="font-weight: bold"
+          <div class="lead text-black text-center m-1 p-3 bg-grey border-0 rounded hover-class" 
+          :class="{'bg-orange': ['*', '-', '+', '='].includes(n), 'bg-dark-grey': ['C', '%', '/'].includes(n)}" 
           @click="action(n)"
           >
           {{n}}
@@ -74,12 +74,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.bg-blue{
-  background: #2541B2;
+.bg-grey{
+  background: #d4d4d2;
+}
+.bg-dark-grey{
+  background: #505050;
+  color: white;
+}
+.bg-orange{
+  background: #ff9500;
+  color: white;
 }
 .hover-class:hover{
   cursor: pointer;
-  background: #06BEE1;
+  background: #E8BF53;
   transition: 0.5s;
 }
 .calc{
